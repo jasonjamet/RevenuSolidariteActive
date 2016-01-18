@@ -47,12 +47,12 @@ public class KeyGenerator {
         m_module = m_firstPrime.multiply(m_secondPrime); // n
 
         //Step 3: Euler indicat m = (p − 1)(q − 1)
-        BigInteger m_indicatEuler = (m_firstPrime.subtract(BigInteger.ONE)).multiply(m_secondPrime.subtract(BigInteger.ONE)); // m
+        m_indicatEuler = (m_firstPrime.subtract(BigInteger.valueOf(1))).multiply(m_secondPrime.subtract(BigInteger.valueOf(1))); // m
 
         //Step 4: Choose e where e and m are coprime
         do {
             m_publicExponent = BigInteger.probablePrime(BIT_LENGTH, new Random()); // e
-        } while(!m_publicExponent.gcd(m_indicatEuler).equals(BigInteger.ONE));
+        } while(!m_publicExponent.gcd(m_indicatEuler).equals(BigInteger.valueOf(1)));
 
         BigInteger ret[] = {m_module, m_publicExponent}; // couple n, e
         return ret;
@@ -64,6 +64,7 @@ public class KeyGenerator {
             System.out.println("You must generate the public key before generate the private one");
         } else {
             //Step 5: Private key  modular multiplicative inverse u d ≡ e^(−1) (mod φ(n))
+
             BigInteger m_privateExponent = m_publicExponent.modInverse(m_indicatEuler);
             BigInteger ret[] = {m_module, m_privateExponent};
             return ret;
