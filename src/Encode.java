@@ -16,14 +16,16 @@ public class Encode {
     }
 
     public static BigInteger[] encode(String str, BigInteger[] publicKey) {
+        System.out.println(str);
         byte[] byteChain = strToAscii(str);
         BigInteger[] encodedChain = new BigInteger[byteChain.length];
 
 
         for(int i = 0; i < byteChain.length; i++)  {
-            encodedChain[i] = BigInteger.valueOf(byteChain[i]).modPow(publicKey[0], publicKey[1]);
-            System.out.println(byteChain[i] + "----" + encodedChain[i]);
+            encodedChain[i] = BigInteger.valueOf(byteChain[i]).modPow(publicKey[1], publicKey[0]);
+            System.out.println(byteChain[i] + " " + encodedChain[i] );
         }
+
         return encodedChain;
     }
 }
