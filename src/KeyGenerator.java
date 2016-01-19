@@ -40,7 +40,7 @@ public class KeyGenerator {
         do {
             m_secondPrime = BigInteger.probablePrime(BIT_LENGTH, new Random()); // q
         }
-        while (m_firstPrime == m_secondPrime); // the two keys as to be different
+        while (m_firstPrime.equals(m_secondPrime)); // the two keys as to be different
 
 
         //Step 2: Encryption module n = pq
@@ -65,8 +65,8 @@ public class KeyGenerator {
         } else {
             //Step 5: Private key  modular multiplicative inverse u d ≡ e^(−1) (mod φ(n))
 
-            BigInteger m_privateExponent = m_publicExponent.modInverse(m_indicatEuler);
-            BigInteger ret[] = {m_module, m_privateExponent};
+            BigInteger m_privateExponent = m_publicExponent.modInverse(m_indicatEuler); //u
+            BigInteger ret[] = {m_module, m_privateExponent}; // couple n, u
             return ret;
         }
         return null;

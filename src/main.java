@@ -10,11 +10,11 @@ public class main {
         /*Alice*/
         KeyGenerator keyGen = new KeyGenerator();
         keyGen.generatePair();
-        BigInteger[] chain = Encode.encode("Bonjour !", keyGen.getPublicKey());
+        BigInteger[] chain = Encode.encode("test", keyGen.getPublicKey());
         Decode.decode(chain, keyGen.getPrivateKey());
 
 
-
+/*
         //Exemple de la feuille de tp
         BigInteger publicKey[] = {BigInteger.valueOf(7), BigInteger.valueOf(5141)};
         Encode.encode("Bonjour !", publicKey);
@@ -26,6 +26,6 @@ public class main {
         BigInteger privateKey[] = {BigInteger.valueOf(5141), BigInteger.valueOf(4279)};
         Decode.decode(chain2, privateKey);
 
-
+*/
     }
 }

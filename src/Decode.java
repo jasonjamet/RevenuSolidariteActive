@@ -18,7 +18,7 @@ public class Decode {
     public static String decode(BigInteger[] chainEncodedArray, BigInteger[] privateKey) {
         System.out.println("-----------");
 
-        byte[] chainDecodedArray = new byte[chainEncodedArray.length];
+        /*byte[] chainDecodedArray = new byte[chainEncodedArray.length];
 
         for(int i = 0; i < chainEncodedArray.length; i++)  {
             chainDecodedArray[i] = chainEncodedArray[i].modPow(privateKey[1], privateKey[0]).toByteArray()[0];
@@ -27,6 +27,13 @@ public class Decode {
         System.out.println(asciiTostr(chainDecodedArray));
 
         return asciiTostr(chainDecodedArray);
+        */
+        String chainDecoded = "";
+        for(int i = 0; i < chainEncodedArray.length; i++)  {
+            chainDecoded += new String(chainEncodedArray[i].modPow(privateKey[1], privateKey[0]).toByteArray());
+            System.out.println(chainDecoded + "----" + chainEncodedArray[i] + "-----" + chainEncodedArray[i].modPow(privateKey[1], privateKey[0]));
+        }
+        return chainDecoded;
 
     }
 }
