@@ -6,23 +6,32 @@ import java.util.Random;
  */
 public class KeyGenerator {
 
-
 	/*************************************************************************************************
 	 ************************************** ATTRIBUTES ***********************************************
 	 *************************************************************************************************/
 
-	private static int BIT_LENGTH = 100;
-	private static int E_BIT_LENGTH = 20;
+	private static int BIT_LENGTH = 256;
+	private static int E_BIT_LENGTH = 32;
 	private BigInteger m_indicatEuler; // m
 	private BigInteger m_publicExponent; // e
 	private BigInteger m_module; // n
 
 	private BigInteger[] m_publicKey;
 	private BigInteger[] m_privateKey;
+	private boolean verbose;
 
 	/*************************************************************************************************
 	 ************************************** METHODS **************************************************
 	 *************************************************************************************************/
+
+	public KeyGenerator(boolean verbose) {
+		this.verbose = verbose;
+		generatePair();
+	}
+
+	public KeyGenerator() {
+		this(false);
+	}
 
 	public void generatePair() {
 		m_publicKey = this.generatePublicKey();
@@ -37,7 +46,7 @@ public class KeyGenerator {
 		do {
 			m_secondPrime = BigInteger.probablePrime(BIT_LENGTH, new Random()); // q
 		} while (m_firstPrime.equals(m_secondPrime)); // the two keys as to be
-													// different
+														// different
 
 		// Step 2: Encryption module n = pq
 		m_module = m_firstPrime.multiply(m_secondPrime); // n
@@ -48,7 +57,8 @@ public class KeyGenerator {
 		// Step 4: Choose e where e and m are coprime
 		do {
 			m_publicExponent = BigInteger.probablePrime(E_BIT_LENGTH, new Random()); // e
-		} while (!m_indicatEuler.gcd(m_publicExponent).equals(BigInteger.ONE) && m_publicExponent.mod(BigInteger.valueOf(2)).equals(BigInteger.ONE));
+		} while (!m_indicatEuler.gcd(m_publicExponent).equals(BigInteger.ONE)
+				&& m_publicExponent.mod(BigInteger.valueOf(2)).equals(BigInteger.ONE));
 
 		BigInteger ret[] = { m_module, m_publicExponent }; // couple n, e
 		return ret;
@@ -88,14 +98,16 @@ public class KeyGenerator {
 				uRes = u.subtract(k.multiply(b));
 				k.subtract(BigInteger.ONE);
 			}
-			System.out.println(uRes);
+			if (verbose) {
+				System.out.println(uRes);
+			}
 			BigInteger m_privateExponent = uRes;
 
+			// BigInteger m_privateExponent =
+			// m_publicExponent.modInverse(m_indicatEuler);
+			BigInteger ret[] = { m_module, m_privateExponent };
 
-//             BigInteger m_privateExponent = m_publicExponent.modInverse(m_indicatEuler);
-             BigInteger ret[] = { m_module, m_privateExponent };
-            
-             return ret;
+			return ret;
 		}
 		return null;
 	}
@@ -104,8 +116,12 @@ public class KeyGenerator {
 	 ************************************** GETTER/SETTER*********************************************
 	 *************************************************************************************************/
 
-	public BigInteger[] getPublicKey() {
+	public BigInteger[] getPublicKeyArray() {
 		return m_publicKey;
+	}
+
+	public PublicKey getPublicKey() {
+		return new PublicKey(m_publicKey[0], m_publicKey[1]);
 	}
 
 	public BigInteger[] getPrivateKey() {
