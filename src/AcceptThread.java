@@ -16,13 +16,13 @@ public class AcceptThread implements Runnable {
 		System.out.println(owner.getName() + " is waiting ...");
 		while (run) {
 			try {
-				System.out.println("Someone try to connect to " + owner.getName());
 				final Socket socket;
 				try {
 					socket = owner.getServer().accept();
 				} catch (final SocketException e) {
 					break;
 				}
+				System.out.println("Someone try to connect to " + owner.getName());
 				final PeopleListener peopleListener = new PeopleListener(owner, socket);
 				final PeopleWriter peopleWriter = new PeopleWriter(owner, socket);
 				peopleListener.acceptNameAndKey();

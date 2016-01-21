@@ -71,7 +71,7 @@ public class People {
 			peopleWriter.setPublicKey(peopleListener.getPublicKey());
 			final Thread t = new Thread(peopleListener);
 			t.start();
-			addPeople(name, peopleListener, peopleWriter);
+			addPeople(peopleListener.getName(), peopleListener, peopleWriter);
 		} catch (final IOException e) {
 			return false;
 		}
@@ -102,6 +102,10 @@ public class People {
 		}
 	}
 
+	public boolean isConnectedTo(final String name) {
+		return writers.containsKey(name) && listeners.containsKey(name);
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -130,29 +134,28 @@ public class People {
 		return server;
 	}
 
-	@SuppressWarnings("unused")
 	private static void sleep() {
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
-		final People Alice = PeopleEnum.Alice.toPeople();
+		final People alice = PeopleEnum.Alice.toPeople();
 
-		final People Bob = PeopleEnum.Bob.toPeople();
+		final People bob = PeopleEnum.Bob.toPeople();
 
-		Alice.connectToOtherPeople("localhost", PeopleEnum.Bob.port);
-
-		Bob.sendMessage(PeopleEnum.Alice.name, "Salut Alice !");
-		Alice.sendMessage(PeopleEnum.Bob.name, "Bonjour Bob !");
-		Bob.sendMessage(PeopleEnum.Alice.name, "Comment sa va ?");
-		Alice.sendMessage(PeopleEnum.Bob.name, "Sa va et toi ?");
-		Bob.sendMessage(PeopleEnum.Alice.name, "Sa va ! a+");
-		Alice.sendMessage(PeopleEnum.Bob.name, "a+");
-		//Alice.stop();
-		//Bob.stop();
+		alice.connectToOtherPeople("localhost", PeopleEnum.Bob.port);
+		System.out.println("Start conversation !");
+		bob.sendMessage(PeopleEnum.Alice.name, "Salut Alice !");
+		alice.sendMessage(PeopleEnum.Bob.name, "Bonjour Bob !");
+		bob.sendMessage(PeopleEnum.Alice.name, "Comment sa va ?");
+		alice.sendMessage(PeopleEnum.Bob.name, "Sa va et toi ?");
+		bob.sendMessage(PeopleEnum.Alice.name, "Sa va ! a+");
+		alice.sendMessage(PeopleEnum.Bob.name, "a+");
+		// alice.stop();
+		// bob.stop();
 	}
 }

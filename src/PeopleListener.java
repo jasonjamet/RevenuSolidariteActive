@@ -24,13 +24,13 @@ public class PeopleListener implements Runnable {
 		run = true;
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			System.out.println(owner.getName() + " is waiting for message from " + name + " ...");
 			String buffer = in.readLine();
 			while (run) {
-				System.out.println(owner.getName() + " is waiting for message from " + name + " ...");
-				buffer = in.readLine();
 				final BigInteger[] code = PeopleListener.StringToBigIntegerArray(buffer);
 				final String message = Decode.decode(code, owner.getPrivateKey());
 				System.out.println(owner.getName() + " receive the message : \"" + message + "\"");
+				buffer = in.readLine();
 			}
 		} catch (final IOException e) {
 			e.printStackTrace();
